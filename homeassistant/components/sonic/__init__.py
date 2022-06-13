@@ -1,91 +1,64 @@
 """The Sonic Water Shut-off Valve integration."""
-from datetime import timedelta
-import logging
+from __future__ import annotations
 
-import async_timeout
+from datetime import timedelta
+
+import logging
+import asyncio
+
 from sonic import (
-    AuthenticationError,
+    InvalidCredentialsError,
     Client,
     ServiceUnavailableError,
     TooManyRequestsError,
 )
-from meater.MeaterApi import MeaterProbe
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DOMAIN
-
-PLATFORMS = [Platform.SENSOR]
+from .const import CLIENT, DOMAIN
+from .device import SonicDeviceDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
+PLATFORMS = [Platform.BINARY_SENSOR, Platform.SENSOR, Platform.SWITCH]
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Meater Temperature Probe from a config entry."""
-    # Store an API object to access
+    """Set up Sonic Water Shut-off Valve from a config entry."""
     session = async_get_clientsession(hass)
-    meater_api = MeaterApi(session)
-
-    # Add the credentials
-    try:
-        _LOGGER.debug("Authenticating with the Meater API")
-        await meater_api.authenticate(
-            entry.data[CONF_USERNAME], entry.data[CONF_PASSWORD]
-        )
-    except (ServiceUnavailableError, TooManyRequestsError) as err:
-        raise ConfigEntryNotReady from err
-    except AuthenticationError as err:
-        raise ConfigEntryAuthFailed(
-            f"Unable to authenticate with the Meater API: {err}"
-        ) from err
-
-    async def async_update_data() -> dict[str, MeaterProbe]:
-        """Fetch data from API endpoint."""
-        try:
-            # Note: asyncio.TimeoutError and aiohttp.ClientError are already
-            # handled by the data update coordinator.
-            async with async_timeout.timeout(10):
-                devices: list[MeaterProbe] = await meater_api.get_all_devices()
-        except AuthenticationError as err:
-            raise ConfigEntryAuthFailed("The API call wasn't authenticated") from err
-        except TooManyRequestsError as err:
-            raise UpdateFailed(
-                "Too many requests have been made to the API, rate limiting is in place"
-            ) from err
-
-        return {device.id: device for device in devices}
-
-    coordinator = DataUpdateCoordinator(
-        hass,
-        _LOGGER,
-        # Name of the data. For logging purposes.
-        name="meater_api",
-        update_method=async_update_data,
-        # Polling interval. Will only be polled if there are subscribers.
-        update_interval=timedelta(seconds=30),
-    )
-    await coordinator.async_config_entry_first_refresh()
-
     hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN].setdefault("known_probes", set())
+    hass.data[DOMAIN][entry.entry_id] = {}
+    try:
+        hass.data[DOMAIN][entry.entry_id][CLIENT] = client = await Client.async_login(
+            entry.data[CONF_USERNAME], entry.data[CONF_PASSWORD], session=session
+        )
+    except InvalidCredentialsError as err:
+        raise ConfigEntryNotReady from err
 
-    hass.data[DOMAIN][entry.entry_id] = {
-        "api": meater_api,
-        "coordinator": coordinator,
-    }
+    sonic_data = await client.sonic.async_get_all_sonic_details()
+    _LOGGER.debug("Sonic device data information: %s", sonic_data)
+
+    hass.data[DOMAIN][entry.entry_id]["devices"] = devices = [
+        SonicDeviceDataUpdateCoordinator(hass, client, device["id"])
+        for device in sonic_data["data"]
+    ]
+
+    tasks = [device.async_refresh() for device in devices]
+    await asyncio.gather(*tasks)
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
-
     return unload_ok

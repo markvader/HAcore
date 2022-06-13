@@ -10,18 +10,15 @@
         "data_description": {
           "username": "Hero Labs username, typically an email address."
         }
-      },
-      "reauth_confirm": {
-        "description": "Confirm the password for Hero Labs account {username}.",
-        "data": {
-          "password": "[%key:common::config_flow::data::password%]"
-        }
       }
     },
     "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
       "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
-      "unknown_auth_error": "[%key:common::config_flow::error::unknown%]",
-      "service_unavailable_error": "The API is currently unavailable, please try again later."
+      "unknown": "[%key:common::config_flow::error::unknown%]"
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
     }
   }
 }

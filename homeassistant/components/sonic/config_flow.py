@@ -1,104 +1,58 @@
-"""Config flow for Sonic."""
-from __future__ import annotations
-
-from collections.abc import Mapping
-from typing import Any
-
-from sonic import InvalidCredentialsError, Client, RequestError
+"""Config flow for Sonic Integration."""
+from sonic import Client, InvalidCredentialsError, ServiceUnavailableError
 import voluptuous as vol
 
-from homeassistant import config_entries
+from homeassistant import config_entries, core, exceptions
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
-from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers import aiohttp_client
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN
+from .const import DOMAIN, LOGGER
 
-REAUTH_SCHEMA = vol.Schema({vol.Required(CONF_PASSWORD): str})
-USER_SCHEMA = vol.Schema(
-    {vol.Required(CONF_USERNAME): str, vol.Required(CONF_PASSWORD): str}
-)
+DATA_SCHEMA = vol.Schema({vol.Required(CONF_USERNAME): str, vol.Required(CONF_PASSWORD): str})
 
 
-class SonicConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Sonic Config Flow."""
+async def validate_input(hass: core.HomeAssistant, data):
+    """Validate the user input allows us to connect.
 
-    _data_schema = USER_SCHEMA
-    _username: str
+    Data has the keys from DATA_SCHEMA with values provided by the user.
+    """
 
-    async def async_step_user(
-        self, user_input: dict[str, str] | None = None
-    ) -> FlowResult:
-        """Define the login user step."""
-        if user_input is None:
-            return self.async_show_form(
-                step_id="user",
-                data_schema=self._data_schema,
-            )
-
-        username: str = user_input[CONF_USERNAME]
-        await self.async_set_unique_id(username.lower())
-        self._abort_if_unique_id_configured()
-
-        username = user_input[CONF_USERNAME]
-        password = user_input[CONF_PASSWORD]
-
-        return await self._try_connect_sonic("user", None, username, password)
-
-    async def async_step_reauth(self, data: Mapping[str, Any]) -> FlowResult:
-        """Handle configuration by re-auth."""
-        self._data_schema = REAUTH_SCHEMA
-        self._username = data[CONF_USERNAME]
-        return await self.async_step_reauth_confirm()
-
-    async def async_step_reauth_confirm(
-        self, user_input: dict[str, str] | None = None
-    ) -> FlowResult:
-        """Handle re-auth completion."""
-        placeholders = {"username": self._username}
-        if not user_input:
-            return self.async_show_form(
-                step_id="reauth_confirm",
-                data_schema=self._data_schema,
-                description_placeholders=placeholders,
-            )
-
-        password = user_input[CONF_PASSWORD]
-        return await self._try_connect_sonic(
-            "reauth_confirm", placeholders, self._username, password
+    session = async_get_clientsession(hass)
+    try:
+        api = await Client.async_login(
+            data[CONF_USERNAME], data[CONF_PASSWORD], session=session
         )
+    except InvalidCredentialsError as request_error:
+        LOGGER.error("Error connecting to the Sonic API: %s", request_error)
+        raise CannotConnect from request_error
 
-    async def _try_connect_sonic(
-        self, step_id, placeholders: dict[str, str] | None, username: str, password: str
-    ) -> FlowResult:
-        session = aiohttp_client.async_get_clientsession(self.hass)
+    properties_info = await api.properties.async_get_property_details()
+    first_property_id = properties_info["data"][0]["id"]
+    property_info = await api.properties.async_get_property_details(first_property_id)
+    return {"title": property_info["name"]}
 
-        api = Client(session)
+
+class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for Sonic."""
+
+    VERSION = 1
+
+    async def async_step_user(self, user_input=None):
+        """Handle the initial step."""
         errors = {}
-
-        try:
-            await api.async_login(username, password)
-        except InvalidCredentialsError:
-            errors["base"] = "invalid_auth"
-        except RequestError:
-            errors["base"] = "service_unavailable_error"
-        except Exception:  # pylint: disable=broad-except
-            errors["base"] = "unknown_auth_error"
-        else:
-            data = {"username": username, "password": password}
-            existing_entry = await self.async_set_unique_id(username.lower())
-            if existing_entry:
-                self.hass.config_entries.async_update_entry(existing_entry, data=data)
-                await self.hass.config_entries.async_reload(existing_entry.entry_id)
-                return self.async_abort(reason="reauth_successful")
-            return self.async_create_entry(
-                title="Sonic",
-                data=data,
-            )
+        if user_input is not None:
+            await self.async_set_unique_id(user_input[CONF_USERNAME])
+            self._abort_if_unique_id_configured()
+            try:
+                info = await validate_input(self.hass, user_input)
+                return self.async_create_entry(title=info["title"], data=user_input)
+            except CannotConnect:
+                errors["base"] = "cannot_connect"
 
         return self.async_show_form(
-            step_id=step_id,
-            data_schema=self._data_schema,
-            description_placeholders=placeholders,
-            errors=errors,
+            step_id="user", data_schema=DATA_SCHEMA, errors=errors
         )
+
+
+class CannotConnect(exceptions.HomeAssistantError):
+    """Error to indicate we cannot connect."""

@@ -1,9 +1,10 @@
 {
-  "codeowners": ["@markvader"],
+  "domain": "sonic",
+  "name": "Sonic by Hero Labs",
   "config_flow": true,
   "documentation": "https://www.home-assistant.io/integrations/sonic",
-  "domain": "sonic",
+  "requirements": ["herolabsapi==0.3.3"],
+  "codeowners": ["@markvader"],
   "iot_class": "cloud_polling",
-  "name": "Sonic by Hero Labs",
-  "requirements": ["herolabsapi==0.3.3"]
+  "loggers": ["sonic"]
 }
