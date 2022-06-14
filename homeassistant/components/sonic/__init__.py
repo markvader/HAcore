@@ -36,6 +36,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         raise ConfigEntryNotReady from err
 
     sonic_data = await client.sonic.async_get_all_sonic_details()
+
     _LOGGER.debug("Sonic device data information: %s", sonic_data)
 
     hass.data[DOMAIN][entry.entry_id]["devices"] = devices = [
