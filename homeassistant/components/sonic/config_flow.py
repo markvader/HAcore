@@ -1,5 +1,5 @@
 """Config flow for Sonic Integration."""
-from sonic import Client, InvalidCredentialsError, ServiceUnavailableError
+from herolabsapi import Client, InvalidCredentialsError, ServiceUnavailableError
 import voluptuous as vol
 
 from homeassistant import config_entries, core, exceptions

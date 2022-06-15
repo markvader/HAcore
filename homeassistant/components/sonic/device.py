@@ -5,8 +5,8 @@ import asyncio
 from datetime import datetime, timedelta
 from typing import Any
 
-from sonic.client import Client
-from sonic.errors import RequestError
+from herolabsapi.client import Client
+from herolabsapi.errors import RequestError
 from async_timeout import timeout
 
 from homeassistant.core import HomeAssistant

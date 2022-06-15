@@ -2,7 +2,7 @@
 import logging
 import asyncio
 
-from sonic import (
+from herolabsapi import (
     InvalidCredentialsError,
     Client,
     ServiceUnavailableError,
