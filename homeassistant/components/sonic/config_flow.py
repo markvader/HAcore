@@ -1,5 +1,5 @@
 """Config flow for Sonic Integration."""
-from herolabsapi import Client, InvalidCredentialsError, ServiceUnavailableError
+from herolabsapi import Client, InvalidCredentialsError
 import voluptuous as vol
 
 from homeassistant import config_entries, core, exceptions
@@ -10,6 +10,7 @@ from .const import DOMAIN, LOGGER
 
 # DATA_SCHEMA = vol.Schema({vol.Required(CONF_USERNAME): str, vol.Required(CONF_PASSWORD): str})
 DATA_SCHEMA = vol.Schema({vol.Required("username"): str, vol.Required("password"): str})
+
 
 async def validate_input(hass: core.HomeAssistant, data):
     """Validate the user input allows us to connect.
@@ -50,7 +51,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             except InvalidHost:
                 errors["host"] = "cannot_connect"
             except Exception:  # pylint: disable=broad-except
-                _LOGGER.exception("Unexpected exception")
+                LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
 
         return self.async_show_form(
