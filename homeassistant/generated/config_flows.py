@@ -331,6 +331,7 @@ FLOWS = {
         "somfy_mylink",
         "sonarr",
         "songpal",
+        "sonic",
         "sonos",
         "speedtestdotnet",
         "spider",

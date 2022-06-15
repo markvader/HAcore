@@ -970,6 +970,7 @@ build.json @home-assistant/supervisor
 /tests/components/sonarr/ @ctalkington
 /homeassistant/components/songpal/ @rytilahti @shenxn
 /tests/components/songpal/ @rytilahti @shenxn
+/homeassistant/components/sonic/ @markvader
 /homeassistant/components/sonos/ @cgtobi @jjlawren
 /tests/components/sonos/ @cgtobi @jjlawren
 /homeassistant/components/spaceapi/ @fabaff
