@@ -810,7 +810,7 @@ heatmiserV3==1.1.18
 herepy==2.0.0
 
 # homeassistant.components.sonic
-herolabsapi==0.3.4
+herolabsapi==0.3.5
 
 # homeassistant.components.hikvisioncam
 hikvision==0.4
