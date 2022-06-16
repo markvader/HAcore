@@ -27,6 +27,8 @@ NAME_BATTERY = "Battery"
 NAME_VALVE_STATE = "Current Valve State"
 NAME_DEVICE_STATUS = "Sonic Status Message"
 NAME_AUTO_SHUT_OFF_ENABLED = "Auto Shut Off Enabled Status"
+NAME_AUTO_SHUT_OFF_TIME_LIMIT = "Auto Shut Off Time Limit"
+NAME_AUTO_SHUT_OFF_VOLUME_LIMIT = "Auto Shut Off Volume Limit"
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -48,6 +50,8 @@ async def async_setup_entry(
                 SonicValveStateSensor(device),
                 SonicDeviceStatusSensor(device),
                 SonicAutoShutOffEnabledSensor(device),
+                SonicAutoShutOffTimeLimitSensor(device),
+                SonicAutoShutOffVolumeLimitSensor(device),
             ]
         )
     async_add_entities(entities)
@@ -167,9 +171,37 @@ class SonicAutoShutOffEnabledSensor(SonicEntity, SensorEntity):
     def __init__(self, device):
         """Initialize the auto_shut_off_enabled sensor."""
         super().__init__("auto_shut_off_enabled", NAME_AUTO_SHUT_OFF_ENABLED, device)
-        self._state: str = None
+        self._state: bool = None
 
     @property
     def native_value(self) -> bool | None:
         """Return the auto_shut_off_enabled state."""
         return self._device.auto_shut_off_enabled
+
+
+class SonicAutoShutOffTimeLimitSensor(SonicEntity, SensorEntity):
+    """Return the auto_shut_off_time_limit state"""
+
+    def __init__(self, device):
+        """Initialize the auto_shut_off_time_limit sensor."""
+        super().__init__("auto_shut_off_time_limit", NAME_AUTO_SHUT_OFF_TIME_LIMIT, device)
+        self._state: int = None
+
+    @property
+    def native_value(self) -> int | None:
+        """Return the auto_shut_off_time_limit state."""
+        return self._device.auto_shut_off_time_limit
+
+
+class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
+    """Return the auto_shut_off_volume_limit state"""
+
+    def __init__(self, device):
+        """Initialize the auto_shut_off_volume_limit sensor."""
+        super().__init__("auto_shut_off_volume_limit", NAME_AUTO_SHUT_OFF_VOLUME_LIMIT, device)
+        self._state: int = None
+
+    @property
+    def native_value(self) -> int | None:
+        """Return the auto_shut_off_volume_limit state."""
+        return self._device.auto_shut_off_volume_limit
