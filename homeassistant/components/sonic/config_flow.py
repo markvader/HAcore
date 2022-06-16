@@ -27,7 +27,7 @@ async def validate_input(hass: core.HomeAssistant, data):
         LOGGER.error("Error connecting to the Sonic API: %s", request_error)
         raise CannotConnect from request_error
 
-    properties_info = await api.property.async_get_property_details()
+    properties_info = await api.property.async_get_all_property_details()
     LOGGER.error("properties_info: %s", properties_info)
     first_property_id = properties_info["data"][0]["id"]
     LOGGER.error("first_property_id: %s", first_property_id)
