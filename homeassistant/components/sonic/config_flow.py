@@ -28,7 +28,9 @@ async def validate_input(hass: core.HomeAssistant, data):
         raise CannotConnect from request_error
 
     properties_info = await api.property.async_get_property_details()
+    LOGGER.error("properties_info: %s", properties_info)
     first_property_id = properties_info["data"][0]["id"]
+    LOGGER.error("first_property_id: %s", first_property_id)
     property_info = await api.property.async_get_property_details(first_property_id)
     return {"title": property_info["name"]}
 
