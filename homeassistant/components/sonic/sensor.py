@@ -110,7 +110,7 @@ class SonicPressureSensor(SonicEntity, SensorEntity):
         """Return the current water pressure in bar."""
         if self._device.current_mbar is None:
             return None
-        return round((self._device.current_mbar)/1000), 1)
+        return round(((self._device.current_mbar)/1000), 1)
 
 
 class SonicBatterySensor(SonicEntity, SensorEntity):
