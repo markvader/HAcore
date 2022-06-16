@@ -9,7 +9,6 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .const import DOMAIN, LOGGER
 
 DATA_SCHEMA = vol.Schema({vol.Required(CONF_USERNAME): str, vol.Required(CONF_PASSWORD): str})
-# DATA_SCHEMA = vol.Schema({vol.Required("username"): str, vol.Required("password"): str})
 
 
 async def validate_input(hass: core.HomeAssistant, data):
@@ -27,12 +26,11 @@ async def validate_input(hass: core.HomeAssistant, data):
         LOGGER.error("Error connecting to the Sonic API: %s", request_error)
         raise CannotConnect from request_error
 
-    properties_info = await api.property.async_get_all_property_details()
-    LOGGER.error("properties_info: %s", properties_info)
-    first_property_id = properties_info["data"][0]["id"]
-    LOGGER.error("first_property_id: %s", first_property_id)
-    property_info = await api.property.async_get_property_details(first_property_id)
-    return {"title": property_info["name"]}
+    # Use the verified session to discover the first sonic device's name
+    sonic_data = await api.sonic.async_get_all_sonic_details()
+    first_sonic_id = sonic_data["data"][0]["id"]
+    sonic_info = await api.sonic.async_get_sonic_details(first_sonic_id)
+    return {"title": sonic_info["name"]}
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
