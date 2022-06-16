@@ -80,7 +80,7 @@ class SonicTemperatureSensor(SonicEntity, SensorEntity):
     _attr_native_unit_of_measurement = TEMP_CELSIUS
     _attr_state_class: SensorStateClass = SensorStateClass.MEASUREMENT
 
-    def __init__(self, name, device):
+    def __init__(self, device):
         """Initialize the temperature sensor."""
         super().__init__("temperature", NAME_WATER_TEMPERATURE, device)
         self._state: float = None
