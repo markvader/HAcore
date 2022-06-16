@@ -162,6 +162,8 @@ class SonicDeviceStatusSensor(SonicEntity, SensorEntity):
     @property
     def native_value(self) -> str | None:
         """Return the device status state."""
+        if not self._device.sonic_status:
+            return None
         return self._device.sonic_status
 
 
