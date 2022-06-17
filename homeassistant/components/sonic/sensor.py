@@ -8,8 +8,10 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    PRESSURE_MBAR,
+    PRESSURE_BAR,
     TEMP_CELSIUS,
+    VOLUME_LITERS,
+    TIME_MINUTES,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
