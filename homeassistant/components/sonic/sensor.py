@@ -61,7 +61,7 @@ class SonicCurrentFlowRateSensor(SonicEntity, SensorEntity):
     """Monitors the current water flow rate."""
 
     _attr_icon = GAUGE_ICON
-    _attr_native_unit_of_measurement = "millilitres per min"
+    _attr_native_unit_of_measurement = "litres per min"
     _attr_state_class: SensorStateClass = SensorStateClass.MEASUREMENT
 
     def __init__(self, device):
@@ -71,10 +71,10 @@ class SonicCurrentFlowRateSensor(SonicEntity, SensorEntity):
 
     @property
     def native_value(self) -> float | None:
-        """Return the current flow rate."""
+        """Return the current flow rate in Litre per minute."""
         if self._device.current_flow_rate is None:
             return None
-        return round(self._device.current_flow_rate, 1)
+        return round(((self._device.current_flow_rate)/1000), 1)
 
 
 class SonicTemperatureSensor(SonicEntity, SensorEntity):
@@ -101,7 +101,7 @@ class SonicPressureSensor(SonicEntity, SensorEntity):
     """Monitors the water pressure."""
 
     _attr_device_class = SensorDeviceClass.PRESSURE
-    _attr_native_unit_of_measurement = PRESSURE_MBAR
+    _attr_native_unit_of_measurement = PRESSURE_BAR
     _attr_state_class: SensorStateClass = SensorStateClass.MEASUREMENT
 
     def __init__(self, device):
@@ -184,6 +184,8 @@ class SonicAutoShutOffEnabledSensor(SonicEntity, SensorEntity):
 class SonicAutoShutOffTimeLimitSensor(SonicEntity, SensorEntity):
     """Return the auto_shut_off_time_limit state"""
 
+    _attr_native_unit_of_measurement = TIME_MINUTES
+
     def __init__(self, device):
         """Initialize the auto_shut_off_time_limit sensor."""
         super().__init__("auto_shut_off_time_limit", NAME_AUTO_SHUT_OFF_TIME_LIMIT, device)
@@ -191,12 +193,14 @@ class SonicAutoShutOffTimeLimitSensor(SonicEntity, SensorEntity):
 
     @property
     def native_value(self) -> int | None:
-        """Return the auto_shut_off_time_limit state."""
-        return self._device.auto_shut_off_time_limit
+        """Return the auto_shut_off_time_limit state in mins."""
+        return (((self._device.auto_shut_off_time_limit)/60) , 0)
 
 
 class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
     """Return the auto_shut_off_volume_limit state"""
+
+    _attr_native_unit_of_measurement = VOLUME_LITERS
 
     def __init__(self, device):
         """Initialize the auto_shut_off_volume_limit sensor."""
@@ -206,4 +210,4 @@ class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
     @property
     def native_value(self) -> int | None:
         """Return the auto_shut_off_volume_limit state."""
-        return self._device.auto_shut_off_volume_limit
+        return (((self._device.auto_shut_off_volume_limit)/1000), 1)
