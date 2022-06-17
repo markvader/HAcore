@@ -196,7 +196,7 @@ class SonicAutoShutOffTimeLimitSensor(SonicEntity, SensorEntity):
     @property
     def native_value(self) -> int | None:
         """Return the auto_shut_off_time_limit state in mins."""
-        return round(((self._device.auto_shut_off_time_limit)/60) , 0)
+        return round((self._device.auto_shut_off_time_limit)/60)
 
 
 class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
@@ -212,4 +212,4 @@ class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
     @property
     def native_value(self) -> int | None:
         """Return the auto_shut_off_volume_limit state."""
-        return round(((self._device.auto_shut_off_volume_limit)/1000), 1)
+        return round((self._device.auto_shut_off_volume_limit)/1000)
