@@ -18,6 +18,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN as SONIC_DOMAIN
 from .device import SonicDeviceDataUpdateCoordinator
+from .property import PropertyDataUpdateCoordinator
 from .entity import SonicEntity
 
 WATER_ICON = "mdi:water"
@@ -32,7 +33,6 @@ NAME_WATER_PRESSURE = "Water Pressure"
 NAME_BATTERY = "Battery"
 NAME_VALVE_STATE = "Current Valve State"
 NAME_DEVICE_STATUS = "Sonic Status Message"
-NAME_AUTO_SHUT_OFF_ENABLED = "Auto Shut Off Enabled Status"
 NAME_AUTO_SHUT_OFF_TIME_LIMIT = "Auto Shut Off Time Limit"
 NAME_AUTO_SHUT_OFF_VOLUME_LIMIT = "Auto Shut Off Volume Limit"
 
@@ -55,7 +55,6 @@ async def async_setup_entry(
                 SonicBatterySensor(device),
                 SonicValveStateSensor(device),
                 SonicDeviceStatusSensor(device),
-                SonicAutoShutOffEnabledSensor(device),
                 SonicAutoShutOffTimeLimitSensor(device),
                 SonicAutoShutOffVolumeLimitSensor(device),
             ]
@@ -176,20 +175,6 @@ class SonicDeviceStatusSensor(SonicEntity, SensorEntity):
         return self._device.sonic_status
 
 
-class SonicAutoShutOffEnabledSensor(SonicEntity, SensorEntity):
-    """Return the auto_shut_off_enabled state"""
-
-    def __init__(self, device):
-        """Initialize the auto_shut_off_enabled sensor."""
-        super().__init__("auto_shut_off_enabled", NAME_AUTO_SHUT_OFF_ENABLED, device)
-        self._state: bool = None
-
-    @property
-    def native_value(self) -> bool | None:
-        """Return the auto_shut_off_enabled state."""
-        return self._device.auto_shut_off_enabled
-
-
 class SonicAutoShutOffTimeLimitSensor(SonicEntity, SensorEntity):
     """Return the auto_shut_off_time_limit state"""
 
@@ -203,7 +188,7 @@ class SonicAutoShutOffTimeLimitSensor(SonicEntity, SensorEntity):
 
     @property
     def native_value(self) -> int | None:
-        """Return the auto_shut_off_time_limit state in mins."""
+        """Return the auto_shut_off_time_limit state in minutes."""
         return round((self._device.auto_shut_off_time_limit)/60)
 
 
@@ -222,3 +207,19 @@ class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
     def native_value(self) -> int | None:
         """Return the auto_shut_off_volume_limit state."""
         return round((self._device.auto_shut_off_volume_limit)/1000)
+
+class PropertyLongFlowNotificationDelay(SonicEntity, SensorEntity):
+    """Return the long flow notification delay in minutes at property"""
+
+    _attr_icon = TIMER_ICON
+    _attr_native_unit_of_measurement = TIME_MINUTES
+
+    def __init__(self, property):
+        """Initialize the property_long_flow_notification_delay_mins sensor."""
+        super().__init__("property_long_flow_notification_delay_mins", NAME_AUTO_SHUT_OFF_TIME_LIMIT, property)
+        self._state: int = None
+
+    @property
+    def native_value(self) -> int | None:
+        """Return the property_long_flow_notification_delay in minutes."""
+        return self._device.auto_shut_off_time_limit
