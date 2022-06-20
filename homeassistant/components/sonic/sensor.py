@@ -73,7 +73,6 @@ async def async_setup_entry(
                 PropertyHighVolumeNotificationThresholdLitres(property),
             ]
         )
-    LOGGER.debug("Entities: %s", entities)
     async_add_entities(entities)
 
 

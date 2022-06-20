@@ -10,8 +10,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN as SONIC_DOMAIN
 from .device import SonicDeviceDataUpdateCoordinator
-from .entity import SonicEntity
-
+from .entity import SonicEntity, PropertyEntity
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -64,6 +63,49 @@ class SonicSwitch(SonicEntity, SwitchEntity):
     def async_update_state(self) -> None:
         """Retrieve the latest valve state and update the state machine."""
         self._state = self._device.last_known_valve_state == "open"
+        self.async_write_ha_state()
+
+    async def async_added_to_hass(self):
+        """When entity is added to hass."""
+        self.async_on_remove(self._device.async_add_listener(self.async_update_state))
+
+
+class AutoShutOffSwitch(PropertyEntity, SwitchEntity):
+    """Switch class for the Property AutoShutOff."""
+
+    def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
+        """Initialize the Property AutoShutOff switch."""
+        super().__init__("auto_shutoff_switch", "Auto Shutoff Function", device)
+        self._state = self._device.property_auto_shut_off == True
+
+    @property
+    def is_on(self) -> bool:
+        """Return True if the AutoShutoff is enabled."""
+        return self._state
+
+    @property
+    def icon(self):
+        """Return the icon to use for the valve."""
+        if self.is_on:
+            return "mdi:auto-fix"
+        return "mdi:exclamation-thick"
+
+    async def async_turn_on(self, **kwargs) -> None:
+        """Turn on the AutoShutOff Function"""
+        await self._device.api_client.property.async_update_property_settings(self._device.id, json={'auto_shut_off': True})
+        self._state = True
+        self.async_write_ha_state()
+
+    async def async_turn_off(self, **kwargs) -> None:
+        """Close the valve."""
+        await self._device.api_client.property.async_update_property_settings(self._device.id, json={'auto_shut_off': False})
+        self._state = False
+        self.async_write_ha_state()
+
+    @callback
+    def async_update_state(self) -> None:
+        """Retrieve the latest switch state and update the state machine."""
+        self._state = self._device.property_auto_shut_off == True
         self.async_write_ha_state()
 
     async def async_added_to_hass(self):
