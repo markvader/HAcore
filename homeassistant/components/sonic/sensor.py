@@ -19,7 +19,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .const import DOMAIN as SONIC_DOMAIN
 from .device import SonicDeviceDataUpdateCoordinator
 from .property import PropertyDataUpdateCoordinator
-from .entity import SonicEntity
+from .entity import SonicEntity, PropertyEntity
 
 WATER_ICON = "mdi:water"
 GAUGE_ICON = "mdi:gauge"
@@ -219,7 +219,7 @@ class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
         """Return the auto_shut_off_volume_limit state."""
         return round((self._device.auto_shut_off_volume_limit)/1000)
 
-class PropertyLongFlowNotificationDelay(SensorEntity):
+class PropertyLongFlowNotificationDelay(PropertyEntity, SensorEntity):
     """Return the long flow notification delay in minutes at property"""
 
     _attr_icon = TIMER_ICON
