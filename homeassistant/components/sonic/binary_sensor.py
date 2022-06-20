@@ -26,34 +26,34 @@ async def async_setup_entry(
     ]["devices"]
     entities: list[BinarySensorEntity] = []
     for device in devices:
-        entities.append(SonicOpenIncidentsBinarySensor(device))
+#        entities.append(SonicOpenIncidentsBinarySensor(device))
         entities.append(SonicAutoShutOffEnabledSensor(device))
     async_add_entities(entities)
 
 
-class SonicOpenIncidentsBinarySensor(SonicEntity, BinarySensorEntity):
-    """Binary sensor that reports on if there are any open incident reports."""
-
-    _attr_device_class = BinarySensorDeviceClass.PROBLEM
-
-    def __init__(self, device):
-        """Initialize the open incidents binary sensor."""
-        super().__init__("open_incidents", "Open Alert Reports", device)
-
-    @property
-    def is_on(self):
-        """Return true if the Sonic device has open incidents."""
-        return self._device.has_incidents
-
-    @property
-    def extra_state_attributes(self):
-        """Return the state attributes."""
-        if not self._device.has_alerts:
-            return {}
-        return {
-            "low": self._device.low_severity_alerts_count,
-            "high": self._device.high_severity_alerts_count,
-        }
+#class SonicOpenIncidentsBinarySensor(SonicEntity, BinarySensorEntity):
+#    """Binary sensor that reports on if there are any open incident reports."""
+#
+#    _attr_device_class = BinarySensorDeviceClass.PROBLEM
+#
+#    def __init__(self, device):
+#        """Initialize the open incidents binary sensor."""
+#        super().__init__("open_incidents", "Open Alert Reports", device)
+#
+#    @property
+#    def is_on(self):
+#        """Return true if the Sonic device has open incidents."""
+#        return self._device.has_incidents
+#
+#    @property
+#    def extra_state_attributes(self):
+#        """Return the state attributes."""
+#        if not self._device.has_alerts:
+#            return {}
+#        return {
+#            "low": self._device.low_severity_alerts_count,
+#            "high": self._device.high_severity_alerts_count,
+#        }
 
 
 class SonicAutoShutOffEnabledSensor(SonicEntity, BinarySensorEntity):
