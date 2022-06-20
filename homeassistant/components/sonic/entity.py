@@ -36,7 +36,7 @@ class SonicEntity(Entity):
             identifiers={(SONIC_DOMAIN, self._device.id)},
             manufacturer=self._device.manufacturer,
             model=self._device.model,
-            name=f'Sonic Device {self._device.device_name}',
+            name=f'Sonic Device: {self._device.device_name}',
             battery=self._device.battery_state
         )
 
@@ -79,9 +79,9 @@ class PropertyEntity(Entity):
         """Return a device description for device registry."""
         return DeviceInfo(
             identifiers={(SONIC_DOMAIN, self._device.id)},
-            manufacturer=self._device.manufacturer,
+            manufacturer="Hero Labs",
             model="Property",
-            name=f'Sonic Property {self._device.device_name}',
+            name=f'Sonic Property: {self._device.device_name}',
         )
 
     @property
