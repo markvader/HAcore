@@ -57,7 +57,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     property_task = [property.async_refresh() for property in properties]
 
-    await asyncio.gather(sonic_task, property_task)
+    await asyncio.gather(*sonic_task, *property_task)
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
 
