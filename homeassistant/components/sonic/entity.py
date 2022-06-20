@@ -63,14 +63,14 @@ class PropertyEntity(Entity):
         self,
         entity_type: str,
         name: str,
-        device: PropertyDataUpdateCoordinator,
+        property: PropertyDataUpdateCoordinator,
         **kwargs,
     ) -> None:
         """Init Property entity."""
         self._attr_name = name
-        self._attr_unique_id = f"{device.id}_{entity_type}"
+        self._attr_unique_id = f"{property.id}_{entity_type}"
 
-        self._device: PropertyDataUpdateCoordinator = device
+        self._property: PropertyDataUpdateCoordinator = property
         self._state: Any = None
 
     @property
