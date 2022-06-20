@@ -59,7 +59,7 @@ async def async_setup_entry(
 class SonicAutoShutOffEnabledSensor(SonicEntity, BinarySensorEntity):
     """Binary sensor that reports if the auto shut off feature is enabled."""
 
-    _attr_device_class = BinarySensorDeviceClass.RUNNING
+    _attr_device_class = BinarySensorDeviceClass
 
     def __init__(self, device):
         """Initialize the pending alerts binary sensor."""
