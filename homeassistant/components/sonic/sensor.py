@@ -17,7 +17,7 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN as SONIC_DOMAIN
+from .const import DOMAIN as SONIC_DOMAIN, LOGGER
 from .device import SonicDeviceDataUpdateCoordinator
 from .property import PropertyDataUpdateCoordinator
 from .entity import SonicEntity, PropertyEntity
