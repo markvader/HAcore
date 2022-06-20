@@ -7,7 +7,7 @@ from homeassistant.helpers.entity import DeviceInfo, Entity
 
 from .const import DOMAIN as SONIC_DOMAIN
 from .device import SonicDeviceDataUpdateCoordinator
-from .property import PropertyDeviceDataUpdateCoordinator
+from .property import PropertyDataUpdateCoordinator
 
 class SonicEntity(Entity):
     """A base class for Sonic entities."""
