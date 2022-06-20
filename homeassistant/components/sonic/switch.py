@@ -23,7 +23,20 @@ async def async_setup_entry(
     ]["devices"]
     entities = []
     for device in devices:
-        entities.append(SonicSwitch(device))
+        entities.extend(
+            [
+                SonicSwitch(device),
+            ]
+        )
+
+    properties: list[PropertyDataUpdateCoordinator] = hass.data[SONIC_DOMAIN][config_entry.entry_id]["properties"]
+    for property in properties:
+        entities.extend(
+            [
+                AutoShutOffSwitch(property),
+            ]
+        )
+
     async_add_entities(entities)
 
 
