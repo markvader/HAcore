@@ -127,16 +127,16 @@ class PropertyDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _update_property(self, *_) -> None:
         """Update the property information from the API."""
-        self._property_information = await self.api_client.properties.async_get_property_details(
+        self._property_information = await self.api_client.property.async_get_property_details(
             self._sonic_property_id
         )
         self._property_settings = (
-            await self.api_client.properties.async_get_property_settings(
+            await self.api_client.property.async_get_property_settings(
                 self._sonic_property_id
             )
         )
         self._property_notification_settings = (
-            await self.api_client.properties.async_get_property_notification_settings(
+            await self.api_client.property.async_get_property_notification_settings(
                 self._sonic_property_id
             )
         )
