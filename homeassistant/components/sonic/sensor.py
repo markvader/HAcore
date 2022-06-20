@@ -252,4 +252,4 @@ class PropertyHighVolumeNotificationThresholdLitres(PropertyEntity, SensorEntity
     @property
     def native_value(self) -> int | None:
         """Return the property_high_volume_threshold_litres."""
-        return self._device.high_volume_threshold_litres
+        return self._device.property_high_volume_threshold_litres
