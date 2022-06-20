@@ -23,7 +23,7 @@ class SonicEntity(Entity):
         **kwargs,
     ) -> None:
         """Init Sonic entity."""
-        self._attr_name = f'Sonic Device {name}'
+        self._attr_name = name
         self._attr_unique_id = f"{device.serial_number}_{entity_type}"
 
         self._device: SonicDeviceDataUpdateCoordinator = device
@@ -36,7 +36,8 @@ class SonicEntity(Entity):
             identifiers={(SONIC_DOMAIN, self._device.id)},
             manufacturer=self._device.manufacturer,
             model=self._device.model,
-            name=self._device.device_name,
+            name=f'Sonic Device {self._device.device_name}',
+            battery=self._device.battery_state
         )
 
     @property
@@ -67,8 +68,7 @@ class PropertyEntity(Entity):
         **kwargs,
     ) -> None:
         """Init Property entity."""
-#        self._attr_name = name
-        self._attr_name = f'Sonic Property {name}'
+        self._attr_name = name
         self._attr_unique_id = f"{property.id}_{entity_type}"
 
         self._device: PropertyDataUpdateCoordinator = property
@@ -79,6 +79,9 @@ class PropertyEntity(Entity):
         """Return a device description for device registry."""
         return DeviceInfo(
             identifiers={(SONIC_DOMAIN, self._device.id)},
+            manufacturer=self._device.manufacturer,
+            model="Property",
+            name=f'Sonic Property {self._device.device_name}',
         )
 
     @property
