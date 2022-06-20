@@ -83,7 +83,7 @@ class PropertyEntity(Entity):
     @property
     def available(self) -> bool:
         """Return True if property is available."""
-        return self._property.id != None
+        return self._device.id != None
 
     async def async_update(self):
         """Update Property entity."""
