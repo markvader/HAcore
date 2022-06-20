@@ -60,6 +60,16 @@ async def async_setup_entry(
                 SonicAutoShutOffVolumeLimitSensor(device),
             ]
         )
+    """Set up the Property sensors from config entry."""
+    properties: list[PropertyDataUpdateCoordinator] = hass.data[SONIC_DOMAIN][
+        config_entry.entry_id
+    ]["properties"]
+    for property in properties:
+        entities.extend(
+            [
+                PropertyLongFlowNotificationDelay(property),
+            ]
+        )
     async_add_entities(entities)
 
 
@@ -209,7 +219,7 @@ class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
         """Return the auto_shut_off_volume_limit state."""
         return round((self._device.auto_shut_off_volume_limit)/1000)
 
-class PropertyLongFlowNotificationDelay(SonicEntity, SensorEntity):
+class PropertyLongFlowNotificationDelay(SensorEntity):
     """Return the long flow notification delay in minutes at property"""
 
     _attr_icon = TIMER_ICON
@@ -223,4 +233,4 @@ class PropertyLongFlowNotificationDelay(SonicEntity, SensorEntity):
     @property
     def native_value(self) -> int | None:
         """Return the property_long_flow_notification_delay in minutes."""
-        return self._device.auto_shut_off_time_limit
+        return self._device.property_long_flow_notification_delay_mins
