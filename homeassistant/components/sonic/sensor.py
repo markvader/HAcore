@@ -12,6 +12,7 @@ from homeassistant.const import (
     TEMP_CELSIUS,
     VOLUME_LITERS,
     TIME_MINUTES,
+    VOLUME_LITERS,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -36,6 +37,7 @@ NAME_DEVICE_STATUS = "Sonic Status Message"
 NAME_AUTO_SHUT_OFF_TIME_LIMIT = "Auto Shut Off Time Limit"
 NAME_AUTO_SHUT_OFF_VOLUME_LIMIT = "Auto Shut Off Volume Limit"
 NAME_LONG_FLOW_NOTIFICATION_DELAY = "Long Flow Notification Time Delay"
+NAME_HIGH_VOLUME_THRESHOLD_LITRES = "High Volume Notification Threshold"
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -68,6 +70,7 @@ async def async_setup_entry(
         entities.extend(
             [
                 PropertyLongFlowNotificationDelay(property),
+                PropertyHighVolumeNotificationThresholdLitres(property),
             ]
         )
     async_add_entities(entities)
@@ -234,3 +237,19 @@ class PropertyLongFlowNotificationDelay(PropertyEntity, SensorEntity):
     def native_value(self) -> int | None:
         """Return the property_long_flow_notification_delay in minutes."""
         return self._device.property_long_flow_notification_delay_mins
+
+class PropertyHighVolumeNotificationThresholdLitres(PropertyEntity, SensorEntity):
+    """Return the high_volume_threshold_litres at property"""
+
+    _attr_icon = TIMER_ICON
+    _attr_native_unit_of_measurement = VOLUME_LITERS
+
+    def __init__(self, property):
+        """Initialize the property_high_volume_threshold_litres sensor."""
+        super().__init__("property_high_volume_threshold_litres", NAME_HIGH_VOLUME_THRESHOLD_LITRES, property)
+        self._state: int = None
+
+    @property
+    def native_value(self) -> int | None:
+        """Return the property_high_volume_threshold_litres."""
+        return self._device.high_volume_threshold_litres
