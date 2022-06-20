@@ -23,7 +23,7 @@ class SonicEntity(Entity):
         **kwargs,
     ) -> None:
         """Init Sonic entity."""
-        self._attr_name = name
+        self._attr_name = f'Sonic Device {name}'
         self._attr_unique_id = f"{device.serial_number}_{entity_type}"
 
         self._device: SonicDeviceDataUpdateCoordinator = device
@@ -67,7 +67,8 @@ class PropertyEntity(Entity):
         **kwargs,
     ) -> None:
         """Init Property entity."""
-        self._attr_name = name
+#        self._attr_name = name
+        self._attr_name = f'Sonic Property {name}'
         self._attr_unique_id = f"{property.id}_{entity_type}"
 
         self._device: PropertyDataUpdateCoordinator = property
