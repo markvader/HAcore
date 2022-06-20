@@ -53,7 +53,7 @@ class SonicEntity(Entity):
         self.async_on_remove(self._device.async_add_listener(self.async_write_ha_state))
 
 
-class SonicEntity(Entity):
+class PropertyEntity(Entity):
     """A base class for Property entities."""
 
     _attr_force_update = False
