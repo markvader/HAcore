@@ -35,6 +35,7 @@ NAME_VALVE_STATE = "Current Valve State"
 NAME_DEVICE_STATUS = "Sonic Status Message"
 NAME_AUTO_SHUT_OFF_TIME_LIMIT = "Auto Shut Off Time Limit"
 NAME_AUTO_SHUT_OFF_VOLUME_LIMIT = "Auto Shut Off Volume Limit"
+NAME_LONG_FLOW_NOTIFICATION_DELAY = "Long Flow Notification Time Delay"
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -216,7 +217,7 @@ class PropertyLongFlowNotificationDelay(SonicEntity, SensorEntity):
 
     def __init__(self, property):
         """Initialize the property_long_flow_notification_delay_mins sensor."""
-        super().__init__("property_long_flow_notification_delay_mins", NAME_AUTO_SHUT_OFF_TIME_LIMIT, property)
+        super().__init__("property_long_flow_notification_delay_mins", NAME_LONG_FLOW_NOTIFICATION_DELAY, property)
         self._state: int = None
 
     @property
