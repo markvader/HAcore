@@ -81,7 +81,7 @@ class PropertyEntity(Entity):
             identifiers={(SONIC_DOMAIN, self._device.id)},
             manufacturer="Hero Labs",
             model="Property",
-            name=f'Sonic Property: {self._device.device_name}',
+            name=f'Sonic Property: {self._device.property_name}',
         )
 
     @property
