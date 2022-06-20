@@ -77,7 +77,7 @@ class PropertyEntity(Entity):
     def device_info(self) -> DeviceInfo:
         """Return a device description for device registry."""
         return DeviceInfo(
-            identifiers={(SONIC_DOMAIN, self._property.id)},
+            identifiers={(SONIC_DOMAIN, self._device.id)},
         )
 
     @property
