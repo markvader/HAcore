@@ -37,7 +37,6 @@ class SonicEntity(Entity):
             manufacturer=self._device.manufacturer,
             model=self._device.model,
             name=f'Sonic Device: {self._device.device_name}',
-            battery=self._device.battery_state
         )
 
     @property

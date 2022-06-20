@@ -29,7 +29,8 @@ async def validate_input(hass: core.HomeAssistant, data):
         raise CannotConnect from request_error
 
     # Use the verified session to discover the first sonic device's name
-#    sonic_data = await api.sonic.async_get_all_sonic_details()
+    await api.sonic.async_get_all_sonic_details()
+    await api.property.async_get_all_property_details()
 #    first_sonic_id = sonic_data["data"][0]["id"]
 #    sonic_info = await api.sonic.async_get_sonic_details(first_sonic_id)
 #    return {"title": f'Sonic Device {sonic_info["name"]}'}
