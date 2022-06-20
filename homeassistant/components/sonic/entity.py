@@ -70,7 +70,7 @@ class PropertyEntity(Entity):
         self._attr_name = name
         self._attr_unique_id = f"{property.id}_{entity_type}"
 
-        self._property: PropertyDataUpdateCoordinator = property
+        self._device: PropertyDataUpdateCoordinator = property
         self._state: Any = None
 
     @property
