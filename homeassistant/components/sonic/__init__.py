@@ -44,7 +44,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         for device in sonic_data["data"]
     ]
 
-    sonic_task = device.async_refresh() for device in devices
+    sonic_task = [device.async_refresh() for device in devices]
 
     property_data = await client.property.async_get_all_property_details()
 
@@ -55,7 +55,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         for property in property_data["data"]
     ]
 
-    property_task = property.async_refresh() for property in properties
+    property_task = [property.async_refresh() for property in properties]
 
     await asyncio.gather(sonic_task, property_task)
 
