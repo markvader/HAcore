@@ -13,6 +13,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN as SONIC_DOMAIN
 from .device import SonicDeviceDataUpdateCoordinator
+from .property import PropertyDataUpdateCoordinator
 from .entity import SonicEntity, PropertyEntity
 
 async def async_setup_entry(
