@@ -37,6 +37,7 @@ async def async_setup_entry(
         entities.extend(
             [
                 AutoShutOffSwitch(property),
+                PressureTestsEnabled(property)
             ]
         )
 
