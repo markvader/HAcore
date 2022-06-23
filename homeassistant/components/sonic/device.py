@@ -137,7 +137,7 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
         return self._device_information["status"]
 
     @property
-    def last_known_valve_state(self) -> str:
+    def last_known_valve_state(self) -> int:
         """Return the current valve state
         Options are: 'open, closed, opening, closing, faulty, pressure_test, requested_open, requested_closed'"""
         telemetry_timestamp = self._device_information["valve_state"]
