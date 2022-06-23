@@ -79,7 +79,7 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
         """Return Unix timestamp in seconds when the sonic took measurements
         Will need to do conversion from timestamp to datetime if HomeAssistant doesn't do it automatically"""
         telemetry_timestamp = self._device_telemetry_information["probed_at"]
-        telemetry_datetime = datetime.strptime(telemetry_timestamp)
+        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp)
         return str(int(telemetry_datetime))
 
     @property
