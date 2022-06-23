@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime, timedelta, strptime
+from datetime import datetime, timedelta
 from typing import Any
 
 from async_timeout import timeout
