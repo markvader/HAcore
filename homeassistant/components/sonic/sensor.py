@@ -173,7 +173,7 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
     def native_value(self) -> str | None:
         """Return the current telemetry time state."""
         telemetry_timestamp = self._device.last_heard_from_time
-        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp)
+        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, tz=None)
         return telemetry_datetime
 #        return self._device.last_heard_from_time
 
