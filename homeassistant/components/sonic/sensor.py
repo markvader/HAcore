@@ -188,9 +188,9 @@ class SonicValveStateSensor(SonicEntity, SensorEntity):
     @property
     def native_value(self) -> str | None:
         """Return the current valve state state."""
-        if not self._device.last_known_valve_state:
+        if not self._device.last_heard_from_time:
             return None
-        return self._device.last_known_valve_state
+        return self._device.last_heard_from_time
 
 
 class SonicDeviceStatusSensor(SonicEntity, SensorEntity):

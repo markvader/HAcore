@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, strptime
 from typing import Any
 
 from async_timeout import timeout
@@ -78,7 +78,9 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
     def last_heard_from_time(self) -> str:
         """Return Unix timestamp in seconds when the sonic took measurements
         Will need to do conversion from timestamp to datetime if HomeAssistant doesn't do it automatically"""
-        return self._telemetry_information["probed_at"]
+        telemetry_timestamp = self._device_telemetry_information["probed_at"]
+        telemetry_datetime = datetime.strptime(telemetry_timestamp)
+        return str(int(telemetry_datetime))
 
     @property
     def available(self) -> bool:
@@ -137,12 +139,10 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
         return self._device_information["status"]
 
     @property
-    def last_known_valve_state(self) -> int:
+    def last_known_valve_state(self) -> str:
         """Return the current valve state
         Options are: 'open, closed, opening, closing, faulty, pressure_test, requested_open, requested_closed'"""
-        telemetry_timestamp = self._device_information["valve_state"]
-        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp)
-        return telemetry_datetime
+        return self._device_information["valve_state"]
 
     async def _update_device(self, *_) -> None:
         """Update the device information from the API."""
