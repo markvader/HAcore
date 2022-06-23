@@ -57,7 +57,7 @@ async def async_setup_entry(
                 SonicTemperatureSensor(device),
                 SonicPressureSensor(device),
                 SonicBatterySensor(device),
-                SonicTelemetryTime(device)
+                SonicTelemetryTime(device),
                 SonicValveStateSensor(device),
                 SonicDeviceStatusSensor(device),
                 SonicAutoShutOffTimeLimitSensor(device),
