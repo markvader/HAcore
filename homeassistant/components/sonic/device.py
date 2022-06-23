@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import timedelta
+from datetime import datetime, timedelta
 from typing import Any
 
 from async_timeout import timeout
@@ -140,7 +140,9 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
     def last_known_valve_state(self) -> str:
         """Return the current valve state
         Options are: 'open, closed, opening, closing, faulty, pressure_test, requested_open, requested_closed'"""
-        return self._device_information["valve_state"]
+        telemetry_timestamp = self._device_information["valve_state"]
+        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, tz=None)
+        return telemetry_datetime
 
     async def _update_device(self, *_) -> None:
         """Update the device information from the API."""
