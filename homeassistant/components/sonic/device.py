@@ -141,7 +141,7 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
         """Return the current valve state
         Options are: 'open, closed, opening, closing, faulty, pressure_test, requested_open, requested_closed'"""
         telemetry_timestamp = self._device_information["valve_state"]
-        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, tz=None)
+        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp)
         return telemetry_datetime
 
     async def _update_device(self, *_) -> None:
