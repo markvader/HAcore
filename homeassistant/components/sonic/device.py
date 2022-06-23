@@ -78,7 +78,7 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
     def last_heard_from_time(self) -> str:
         """Return Unix timestamp in seconds when the sonic took measurements
         Will need to do conversion from timestamp to datetime if HomeAssistant doesn't do it automatically"""
-        return self._device_telemetry_information["probed_at"]
+        return self._telemetry_information["probed_at"]
 
     @property
     def available(self) -> bool:
