@@ -38,6 +38,7 @@ NAME_AUTO_SHUT_OFF_TIME_LIMIT = "Auto Shut Off Time Limit"
 NAME_AUTO_SHUT_OFF_VOLUME_LIMIT = "Auto Shut Off Volume Limit"
 NAME_LONG_FLOW_NOTIFICATION_DELAY = "Long Flow Notification Time Delay"
 NAME_HIGH_VOLUME_THRESHOLD_LITRES = "High Volume Notification Threshold"
+NAME_TELEMETRYTIME = "Telemetry Data Timestamp"
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -56,6 +57,7 @@ async def async_setup_entry(
                 SonicTemperatureSensor(device),
                 SonicPressureSensor(device),
                 SonicBatterySensor(device),
+                SonicTelemetryTime(device)
                 SonicValveStateSensor(device),
                 SonicDeviceStatusSensor(device),
                 SonicAutoShutOffTimeLimitSensor(device),
@@ -152,6 +154,24 @@ class SonicBatterySensor(SonicEntity, SensorEntity):
     def native_value(self) -> str | None:
         """Return the current battery state."""
         return self._device.battery_state
+
+
+class SonicTelemetryTime(SonicEntity, SensorEntity):
+    """Returns time that the telemetry data was captured at by sonic."""
+
+    _attr_icon = TIMER_ICON
+    _attr_device_class = SensorDeviceClass.TIMESTAMP
+    _attr_state_class: SensorStateClass = SensorStateClass.MEASUREMENT
+
+    def __init__(self, device):
+        """Initialize the telemetry time sensor."""
+        super().__init__("telemetry_time", NAME_TELEMETRYTIME, device)
+        self._state: str = None
+
+    @property
+    def native_value(self) -> str | None:
+        """Return the current telemetry time state."""
+        return self._device.last_heard_from_time
 
 
 class SonicValveStateSensor(SonicEntity, SensorEntity):
