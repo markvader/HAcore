@@ -1,5 +1,6 @@
 """The Sonic Water Shut-off Valve integration."""
 from __future__ import annotations
+from datetime import datetime
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -171,7 +172,10 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
     @property
     def native_value(self) -> str | None:
         """Return the current telemetry time state."""
-        return self._device.last_heard_from_time
+        telemetry_timestamp = self._device.last_heard_from_time
+        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp)
+        return telemetry_datetime
+#        return self._device.last_heard_from_time
 
 
 class SonicValveStateSensor(SonicEntity, SensorEntity):

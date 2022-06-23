@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Any
 
 from async_timeout import timeout
@@ -78,9 +78,7 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
     def last_heard_from_time(self) -> str:
         """Return Unix timestamp in seconds when the sonic took measurements
         Will need to do conversion from timestamp to datetime if HomeAssistant doesn't do it automatically"""
-        telemetry_timestamp = self._device_telemetry_information["probed_at"]
-        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp)
-        return str(int(telemetry_datetime))
+        return self._device_telemetry_information["probed_at"]
 
     @property
     def available(self) -> bool:
