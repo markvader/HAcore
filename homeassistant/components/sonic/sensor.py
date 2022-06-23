@@ -169,7 +169,7 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
         self._state: str = None
 
     @property
-    def native_value(self) -> str | None:
+    def native_value(self) -> int | None:
         """Return the current telemetry time state."""
         return self._device.last_heard_from_time
 
