@@ -157,7 +157,7 @@ class SonicBatterySensor(SonicEntity, SensorEntity):
         return self._device.battery_state
 
 
-class SonicTelemetryTime(PropertyEntity, SensorEntity):
+class SonicTelemetryTime(SonicEntity, SensorEntity):
     """Returns time that the telemetry data was captured at by sonic."""
 
     _attr_icon = TIMER_ICON
@@ -173,8 +173,7 @@ class SonicTelemetryTime(PropertyEntity, SensorEntity):
     def native_value(self) -> str | None:
         """Return the current telemetry time state."""
         telemetry_timestamp = self._device.last_heard_from_time
-        telemetry_timezone = self._device.property_timezone
-        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, tz=telemetry_timezone)
+        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, tz="Europe/London")
         return telemetry_datetime
 
 
