@@ -176,7 +176,6 @@ class SonicTelemetryTime(PropertyEntity, SensorEntity):
         telemetry_timezone = self._device.property_timezone
         telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, tz=telemetry_timezone)
         return telemetry_datetime
-#        return self._device.last_heard_from_time
 
 
 class SonicValveStateSensor(SonicEntity, SensorEntity):
@@ -195,7 +194,7 @@ class SonicValveStateSensor(SonicEntity, SensorEntity):
         """Return the current valve state state."""
         if not self._device.last_heard_from_time:
             return None
-        return self._device.last_heard_from_time
+        return self._device.valve_state
 
 
 class SonicDeviceStatusSensor(SonicEntity, SensorEntity):
