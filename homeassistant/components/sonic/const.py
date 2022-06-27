@@ -5,3 +5,5 @@ LOGGER = logging.getLogger(__package__)
 
 CLIENT = "client"
 DOMAIN = "sonic"
+
+TIMEZONE = ""

@@ -12,8 +12,8 @@ from herolabsapi.errors import RequestError
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
+from .const import TIMEZONE
 from .const import DOMAIN as SONIC_DOMAIN, LOGGER
-from .property import PropertyDataUpdateCoordinator
 
 
 class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
@@ -76,9 +76,9 @@ class SonicDeviceDataUpdateCoordinator(DataUpdateCoordinator):
         return self._device_information["radio_rssi"]
 
     @property
-    def sonic_timezone(self) -> str:
-        """Pull the timezone from property."""
-        return self.PropertyDataUpdateCoordinator.property_timezone
+    def global_timezone(self) -> str:
+        """Pull the timezone stored in const file (updated by property)."""
+        return const.TIMEZONE
 
     @property
     def last_heard_from_time(self) -> str:
