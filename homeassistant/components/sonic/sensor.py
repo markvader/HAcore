@@ -165,6 +165,7 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
     _attr_icon = TIMER_ICON
     _attr_device_class = SensorDeviceClass.TIMESTAMP
     _attr_state_class: SensorStateClass = SensorStateClass.MEASUREMENT
+    global_timezone = const.TIMEZONE
 
     def __init__(self, device):
         """Initialize the telemetry time sensor."""
@@ -176,7 +177,7 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
         """Return the current telemetry time state."""
         telemetry_timestamp = self._device.last_heard_from_time
 #        property_timezone = self._device.property_timezone
-        timezone = pytz.timezone(const.TIMEZONE)
+        timezone = pytz.timezone(global_timezone)
         telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, timezone)
         return telemetry_datetime
 

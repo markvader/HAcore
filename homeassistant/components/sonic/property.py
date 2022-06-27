@@ -83,6 +83,7 @@ class PropertyDataUpdateCoordinator(DataUpdateCoordinator):
     @property
     def update_global_timezone(self) -> str:
         """Update the global timezone variable."""
+        global const.TIMEZONE
         const.TIMEZONE = self.property_timezone
 
     @property
