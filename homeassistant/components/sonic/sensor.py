@@ -174,8 +174,8 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
     def native_value(self) -> str | None:
         """Return the current telemetry time state."""
         telemetry_timestamp = self._device.last_heard_from_time
-        # telemetry_timezone = self._device.property_timezone
-        timezone = pytz.timezone("Europe/London")
+#        property_timezone = self._device.property_timezone
+        timezone = pytz.timezone(self._device.property_timezone)
         telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, timezone)
         return telemetry_datetime
 
