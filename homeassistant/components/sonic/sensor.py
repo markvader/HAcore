@@ -196,7 +196,7 @@ class SonicValveStateSensor(SonicEntity, SensorEntity):
         """Return the current valve state state."""
         if not self._device.last_heard_from_time:
             return None
-        return self._device.valve_state
+        return self._device.last_known_valve_state
 
 
 class SonicDeviceStatusSensor(SonicEntity, SensorEntity):
