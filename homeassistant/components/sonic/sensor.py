@@ -158,7 +158,7 @@ class SonicBatterySensor(SonicEntity, SensorEntity):
         return self._device.battery_state
 
 
-class SonicTelemetryTime(SonicEntity, PropertyEntity, SensorEntity):
+class SonicTelemetryTime(SonicEntity, SensorEntity):
     """Returns time that the telemetry data was captured at by sonic."""
 
     _attr_icon = TIMER_ICON
