@@ -1,6 +1,7 @@
 """The Sonic Water Shut-off Valve integration."""
 from __future__ import annotations
 from datetime import datetime
+import pytz
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -173,7 +174,9 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
     def native_value(self) -> str | None:
         """Return the current telemetry time state."""
         telemetry_timestamp = self._device.last_heard_from_time
-        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, tz="Europe/London")
+        # telemetry_timezone = self._device.property_timezone
+        timezone = pytz.timezone("Europe/London")
+        telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, timezone)
         return telemetry_datetime
 
 
@@ -191,7 +194,7 @@ class SonicValveStateSensor(SonicEntity, SensorEntity):
     @property
     def native_value(self) -> str | None:
         """Return the current valve state state."""
-        if not self._device.last_heard_from_time:
+        if not self._device.last_heard_from_time
             return None
         return self._device.valve_state
 
