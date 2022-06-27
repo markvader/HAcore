@@ -73,7 +73,6 @@ async def async_setup_entry(
     for property in properties:
         entities.extend(
             [
-                SonicTelemetryTime(property),
                 PropertyLongFlowNotificationDelay(property),
                 PropertyHighVolumeNotificationThresholdLitres(property),
             ]
@@ -176,7 +175,7 @@ class SonicTelemetryTime(SonicEntity, PropertyEntity, SensorEntity):
         """Return the current telemetry time state."""
         telemetry_timestamp = self._device.last_heard_from_time
 #        property_timezone = self._device.property_timezone
-        timezone = pytz.timezone(self._device.property_timezone)
+        timezone = pytz.timezone(self._device.sonic_timezone)
         telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, timezone)
         return telemetry_datetime
 
