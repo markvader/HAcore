@@ -73,6 +73,7 @@ async def async_setup_entry(
     for property in properties:
         entities.extend(
             [
+                SonicTelemetryTime(property),
                 PropertyLongFlowNotificationDelay(property),
                 PropertyHighVolumeNotificationThresholdLitres(property),
             ]
