@@ -164,6 +164,7 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
     _attr_icon = TIMER_ICON
     _attr_device_class = SensorDeviceClass.TIMESTAMP
     _attr_state_class: SensorStateClass = SensorStateClass.MEASUREMENT
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, device):
         """Initialize the telemetry time sensor."""
@@ -202,6 +203,8 @@ class SonicValveStateSensor(SonicEntity, SensorEntity):
 class SonicDeviceStatusSensor(SonicEntity, SensorEntity):
     """Return any sonic status message"""
 
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+
     def __init__(self, device):
         """Initialize the device status sensor."""
         super().__init__("device_status", NAME_DEVICE_STATUS, device)
@@ -220,6 +223,7 @@ class SonicAutoShutOffTimeLimitSensor(SonicEntity, SensorEntity):
 
     _attr_icon = TIMER_ICON
     _attr_native_unit_of_measurement = TIME_MINUTES
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, device):
         """Initialize the auto_shut_off_time_limit sensor."""
@@ -237,6 +241,7 @@ class SonicAutoShutOffVolumeLimitSensor(SonicEntity, SensorEntity):
 
     _attr_icon = VOLUME_ICON
     _attr_native_unit_of_measurement = VOLUME_LITERS
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, device):
         """Initialize the auto_shut_off_volume_limit sensor."""
@@ -253,6 +258,7 @@ class PropertyLongFlowNotificationDelay(PropertyEntity, SensorEntity):
 
     _attr_icon = TIMER_ICON
     _attr_native_unit_of_measurement = TIME_MINUTES
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, property):
         """Initialize the property_long_flow_notification_delay_mins sensor."""
@@ -269,6 +275,7 @@ class PropertyHighVolumeNotificationThresholdLitres(PropertyEntity, SensorEntity
 
     _attr_icon = TIMER_ICON
     _attr_native_unit_of_measurement = VOLUME_LITERS
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, property):
         """Initialize the property_high_volume_threshold_litres sensor."""

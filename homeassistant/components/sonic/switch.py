@@ -51,7 +51,7 @@ class SonicSwitch(SonicEntity, SwitchEntity):
     def __init__(self, device: SonicDeviceDataUpdateCoordinator) -> None:
         """Initialize the Sonic switch."""
         super().__init__("shutoff_valve", "Shutoff Valve", device)
-        self._state = self._device.last_known_valve_state == "open"
+        self._state = self._device.last_known_valve_state is "open"
 
     @property
     def is_on(self) -> bool:
@@ -80,7 +80,7 @@ class SonicSwitch(SonicEntity, SwitchEntity):
     @callback
     def async_update_state(self) -> None:
         """Retrieve the latest valve state and update the state machine."""
-        self._state = self._device.last_known_valve_state == "open"
+        self._state = self._device.last_known_valve_state is "open"
         self.async_write_ha_state()
 
     async def async_added_to_hass(self):
@@ -90,11 +90,12 @@ class SonicSwitch(SonicEntity, SwitchEntity):
 
 class AutoShutOffSwitch(PropertyEntity, SwitchEntity):
     """Switch class for the Property AutoShutOff."""
+    _attr_entity_category = EntityCategory.CONFIG
 
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property AutoShutOff switch."""
         super().__init__("auto_shutoff_switch", "Auto Shutoff Function", device)
-        self._state = self._device.property_auto_shut_off == True
+        self._state = self._device.property_auto_shut_off is True
 
     @property
     def is_on(self) -> bool:
@@ -123,7 +124,7 @@ class AutoShutOffSwitch(PropertyEntity, SwitchEntity):
     @callback
     def async_update_state(self) -> None:
         """Retrieve the latest switch state and update the state machine."""
-        self._state = self._device.property_auto_shut_off == True
+        self._state = self._device.property_auto_shut_off is True
         self.async_write_ha_state()
 
     async def async_added_to_hass(self):
@@ -134,10 +135,12 @@ class AutoShutOffSwitch(PropertyEntity, SwitchEntity):
 class PressureTestsEnabled(PropertyEntity, SwitchEntity):
     """Switch class for the Property pressure_tests_enabled."""
 
+    _attr_entity_category = EntityCategory.CONFIG
+
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property Pressure Tests Enabled switch."""
         super().__init__("pressure_tests_enabled", "Pressure Tests Function", device)
-        self._state = self._device.property_pressure_tests_enabled == True
+        self._state = self._device.property_pressure_tests_enabled is True
 
     @property
     def is_on(self) -> bool:
@@ -166,7 +169,7 @@ class PressureTestsEnabled(PropertyEntity, SwitchEntity):
     @callback
     def async_update_state(self) -> None:
         """Retrieve the latest switch state and update the state machine."""
-        self._state = self._device.property_pressure_tests_enabled == True
+        self._state = self._device.property_pressure_tests_enabled is True
         self.async_write_ha_state()
 
     async def async_added_to_hass(self):
