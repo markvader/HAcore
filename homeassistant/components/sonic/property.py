@@ -13,7 +13,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN as SONIC_DOMAIN, LOGGER
-from .const import TIMEZONE
 
 
 class PropertyDataUpdateCoordinator(DataUpdateCoordinator):
@@ -79,12 +78,6 @@ class PropertyDataUpdateCoordinator(DataUpdateCoordinator):
     def property_timezone(self) -> str:
         """Return the timezone set at property."""
         return self._property_settings["timezone"]
-
-    @property
-    def update_global_timezone(self) -> str:
-        """Update the global timezone variable."""
-        global const.TIMEZONE
-        const.TIMEZONE = self.property_timezone
 
     @property
     def property_cloud_disconnection(self) -> bool:

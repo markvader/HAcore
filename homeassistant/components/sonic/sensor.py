@@ -20,7 +20,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN as SONIC_DOMAIN, LOGGER
-from .const import TIMEZONE
 from .device import SonicDeviceDataUpdateCoordinator
 from .property import PropertyDataUpdateCoordinator
 from .entity import SonicEntity, PropertyEntity
@@ -165,7 +164,6 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
     _attr_icon = TIMER_ICON
     _attr_device_class = SensorDeviceClass.TIMESTAMP
     _attr_state_class: SensorStateClass = SensorStateClass.MEASUREMENT
-    global_timezone = const.TIMEZONE
 
     def __init__(self, device):
         """Initialize the telemetry time sensor."""
@@ -176,8 +174,8 @@ class SonicTelemetryTime(SonicEntity, SensorEntity):
     def native_value(self) -> str | None:
         """Return the current telemetry time state."""
         telemetry_timestamp = self._device.last_heard_from_time
-#        property_timezone = self._device.property_timezone
-        timezone = pytz.timezone(global_timezone)
+        # telemetry_timezone = self._device.property_timezone
+        timezone = pytz.timezone("Europe/London")
         telemetry_datetime = datetime.fromtimestamp(telemetry_timestamp, timezone)
         return telemetry_datetime
 
