@@ -51,7 +51,7 @@ class SonicSwitch(SonicEntity, SwitchEntity):
     def __init__(self, device: SonicDeviceDataUpdateCoordinator) -> None:
         """Initialize the Sonic switch."""
         super().__init__("shutoff_valve", "Sonic Valve Switch", device)
-        self._state = self._device.last_known_valve_state is "open"
+        self._state = self._device.last_known_valve_state == "open"
 
     @property
     def is_on(self) -> bool:
@@ -80,7 +80,7 @@ class SonicSwitch(SonicEntity, SwitchEntity):
     @callback
     def async_update_state(self) -> None:
         """Retrieve the latest valve state and update the state machine."""
-        self._state = self._device.last_known_valve_state is "open"
+        self._state = self._device.last_known_valve_state == "open"
         self.async_write_ha_state()
 
     async def async_added_to_hass(self):
