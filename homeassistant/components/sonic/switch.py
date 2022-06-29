@@ -39,6 +39,8 @@ async def async_setup_entry(
             [
                 AutoShutOffSwitch(property),
                 PressureTestsEnabled(property)
+                CloudDisconnectionAlert(property)
+                LowBatteryLevelAlert(property)
             ]
         )
 
