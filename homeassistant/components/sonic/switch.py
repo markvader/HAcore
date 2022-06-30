@@ -199,8 +199,8 @@ class CloudDisconnectionAlert(PropertyEntity, SwitchEntity):
     def icon(self):
         """Return the icon to use for the switch."""
         if self.is_on:
-            return "mdi:auto-fix"
-        return "mdi:exclamation-thick"
+            return "mdi:bell"
+        return "mdi:bell-off"
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the Alert"""
@@ -244,8 +244,8 @@ class LowBatteryLevelAlert(PropertyEntity, SwitchEntity):
     def icon(self):
         """Return the icon to use for the switch."""
         if self.is_on:
-            return "mdi:auto-fix"
-        return "mdi:exclamation-thick"
+            return "mdi:bell"
+        return "mdi:bell-off"
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the Alert"""
@@ -289,8 +289,8 @@ class DeviceHandleMovedAlert(PropertyEntity, SwitchEntity):
     def icon(self):
         """Return the icon to use for the switch."""
         if self.is_on:
-            return "mdi:auto-fix"
-        return "mdi:exclamation-thick"
+            return "mdi:bell"
+        return "mdi:bell-off"
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the Alert"""
@@ -334,8 +334,8 @@ class HealthCheckFailedAlert(PropertyEntity, SwitchEntity):
     def icon(self):
         """Return the icon to use for the switch."""
         if self.is_on:
-            return "mdi:auto-fix"
-        return "mdi:exclamation-thick"
+            return "mdi:bell"
+        return "mdi:bell-off"
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the Alert"""
@@ -379,8 +379,8 @@ class PressureTestFailedAlert(PropertyEntity, SwitchEntity):
     def icon(self):
         """Return the icon to use for the switch."""
         if self.is_on:
-            return "mdi:auto-fix"
-        return "mdi:exclamation-thick"
+            return "mdi:bell"
+        return "mdi:bell-off"
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the Alert"""
@@ -424,8 +424,8 @@ class PressureTestSkippedAlert(PropertyEntity, SwitchEntity):
     def icon(self):
         """Return the icon to use for the switch."""
         if self.is_on:
-            return "mdi:auto-fix"
-        return "mdi:exclamation-thick"
+            return "mdi:bell"
+        return "mdi:bell-off"
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the Alert"""
@@ -469,8 +469,8 @@ class RadioDisconnectionAlert(PropertyEntity, SwitchEntity):
     def icon(self):
         """Return the icon to use for the switch."""
         if self.is_on:
-            return "mdi:auto-fix"
-        return "mdi:exclamation-thick"
+            return "mdi:bell"
+        return "mdi:bell-off"
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the Alert"""
