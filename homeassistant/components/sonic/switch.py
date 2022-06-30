@@ -187,7 +187,7 @@ class CloudDisconnectionAlert(PropertyEntity, SwitchEntity):
 
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property CloudDisconnection Alert switch."""
-        super().__init__("cloud_disconnection_alert", "Alert Settings - Cloud Disconnection", device)
+        super().__init__("cloud_disconnection_alert", "Alerts - Cloud Disconnection", device)
         self._state = self._device.property_cloud_disconnection == True
 
     @property
@@ -232,7 +232,7 @@ class LowBatteryLevelAlert(PropertyEntity, SwitchEntity):
 
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property low_battery_level Alert switch."""
-        super().__init__("low_battery_level_alert", "Alert Settings - Low Battery Level", device)
+        super().__init__("low_battery_level_alert", "Alerts - Low Battery Level", device)
         self._state = self._device.property_low_battery_level == True
 
     @property
@@ -277,7 +277,7 @@ class DeviceHandleMovedAlert(PropertyEntity, SwitchEntity):
 
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property Device Handle Moved Alert switch."""
-        super().__init__("device_handle_moved_alert", "Alert Settings - Device Handle Moved", device)
+        super().__init__("device_handle_moved_alert", "Alerts - Valve Position", device)
         self._state = self._device.property_device_handle_moved == True
 
     @property
@@ -322,7 +322,7 @@ class HealthCheckFailedAlert(PropertyEntity, SwitchEntity):
 
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property Health Check Failed Alert switch."""
-        super().__init__("health_check_failed_alert", "Alert Settings - Health Check Failed", device)
+        super().__init__("health_check_failed_alert", "Alerts - Health Check Failed", device)
         self._state = self._device.property_health_check_failed == True
 
     @property
@@ -367,7 +367,7 @@ class PressureTestFailedAlert(PropertyEntity, SwitchEntity):
 
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property Pressure Test Failed Alert switch."""
-        super().__init__("pressure_test_failed_alert", "Alert Settings - Pressure Test Failed", device)
+        super().__init__("pressure_test_failed_alert", "Alerts - Pressure Test Failed", device)
         self._state = self._device.property_pressure_test_failed == True
 
     @property
@@ -412,7 +412,7 @@ class PressureTestSkippedAlert(PropertyEntity, SwitchEntity):
 
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property Pressure Test Skipped Alert switch."""
-        super().__init__("pressure_test_skipped_alert", "Alert Settings - Pressure Test Skipped", device)
+        super().__init__("pressure_test_skipped_alert", "Alerts - Pressure Test Skipped", device)
         self._state = self._device.property_pressure_test_skipped == True
 
     @property
@@ -457,7 +457,7 @@ class RadioDisconnectionAlert(PropertyEntity, SwitchEntity):
 
     def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
         """Initialize the Property Radio Disconnection Alert switch."""
-        super().__init__("radio_disconnection_alert", "Alert Settings - Radio Disconnection", device)
+        super().__init__("radio_disconnection_alert", "Alerts - Radio Disconnection", device)
         self._state = self._device.property_radio_disconnection == True
 
     @property
