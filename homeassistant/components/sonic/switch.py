@@ -263,3 +263,48 @@ class LowBatteryLevelAlert(PropertyEntity, SwitchEntity):
     async def async_added_to_hass(self):
         """When entity is added to hass."""
         self.async_on_remove(self._device.async_add_listener(self.async_update_state))
+
+
+class DeviceHandleMovedAlert(PropertyEntity, SwitchEntity):
+    """Switch class for the Device Handle Moved Alert."""
+
+    _attr_entity_category = EntityCategory.CONFIG
+
+    def __init__(self, device: PropertyDataUpdateCoordinator) -> None:
+        """Initialize the Property Device Handle Moved Alert switch."""
+        super().__init__("device_handle_moved_alert", "Alert Settings - Device Handle Moved", device)
+        self._state = self._device.property_device_handle_moved == True
+
+    @property
+    def is_on(self) -> bool:
+        """Return True if the Alert is enabled."""
+        return self._state
+
+    @property
+    def icon(self):
+        """Return the icon to use for the switch."""
+        if self.is_on:
+            return "mdi:auto-fix"
+        return "mdi:exclamation-thick"
+
+    async def async_turn_on(self, **kwargs) -> None:
+        """Turn on the Alert"""
+        await self._device.api_client.property.async_update_property_notifications(self._device.id, {'device_handle_moved': True})
+        self._state = True
+        self.async_write_ha_state()
+
+    async def async_turn_off(self, **kwargs) -> None:
+        """Turn off the Alert"""
+        await self._device.api_client.property.async_update_property_notifications(self._device.id, {'device_handle_moved': False})
+        self._state = False
+        self.async_write_ha_state()
+
+    @callback
+    def async_update_state(self) -> None:
+        """Retrieve the latest switch state and update the state machine."""
+        self._state = self._device.property_device_handle_moved == True
+        self.async_write_ha_state()
+
+    async def async_added_to_hass(self):
+        """When entity is added to hass."""
+        self.async_on_remove(self._device.async_add_listener(self.async_update_state))
