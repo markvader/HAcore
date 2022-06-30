@@ -1,10 +1,6 @@
 """Switch representing the Sonic shutoff valve by Hero Labs integration."""
 from __future__ import annotations
 
-import voluptuous as vol
-from dataclasses import dataclass
-from typing import Any
-
 from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
