@@ -21,7 +21,7 @@ async def async_setup_entry(
     config_entry: WatergateConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up all entries for Wolf Platform."""
+    """Set up all entries for Watergate Platform."""
 
     async_add_entities(
         [SonicValve(config_entry.runtime_data.coordinator, config_entry)]
@@ -81,7 +81,7 @@ class SonicValve(WatergateEntity, ValveEntity):
         self.async_write_ha_state()
 
     async def async_close_valve(self, **kwargs: Any) -> None:
-        """Open the valve."""
+        """Close the valve."""
         await self._api_client.async_set_valve_state("close")
         self._valve_state = ValveState.CLOSING
         self.async_write_ha_state()
