@@ -43,7 +43,7 @@ class WatergateEntity(CoordinatorEntity[WatergateDataCoordinator]):
 
 @dataclass
 class WatergateData:
-    """Data for the A. O. Smith integration."""
+    """Data for the Watergate integration."""
 
     client: WatergateLocalApiClient
     coordinator: WatergateDataCoordinator
